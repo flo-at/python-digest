@@ -85,7 +85,8 @@ def build_digest_challenge(timestamp, secret, realm, opaque, stale, algorithm='M
     '''
     nonce = calculate_nonce(timestamp, secret)
 
-    return 'Digest %s' % format_parts(realm=realm, qop='auth', nonce=nonce,
+    return 'Digest %s' % format_parts(('stale', 'algorithm'),
+                                      realm=realm, qop='auth', nonce=nonce,
                                       opaque=opaque, algorithm=algorithm,
                                       stale=stale and 'true' or 'false')
 
@@ -197,7 +198,8 @@ def build_authorization_request(username, method, uri, nonce_count, digest_chall
                                                   client_nonce=client_nonce,
                                                   algorithm=algorithm)
 
-    return 'Digest %s' % format_parts(username=username, realm=realm, nonce=nonce, uri=uri,
+    return 'Digest %s' % format_parts(('algorithm', 'qop', 'nc'),
+                                      username=username, realm=realm, nonce=nonce, uri=uri,
                                       response=request_digest, algorithm=algorithm, opaque=opaque,
                                       qop='auth', nc='%08x' % nonce_count, cnonce=client_nonce)
     

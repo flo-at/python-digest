@@ -246,5 +246,5 @@ def parse_parts(parts_string, defaults={}):
                     "(offending character is in []): %r" % annotated_parts_string)
         return None
 
-def format_parts(**kwargs):
-    return ", ".join(['%s="%s"' % (k, v) for (k, v) in kwargs.items()])
+def format_parts(unquoted=(), **kwargs):
+    return ", ".join([('%s=%s' if k in unquoted else '%s="%s"') % (k, v) for (k, v) in kwargs.items()])
